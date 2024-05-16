@@ -17,6 +17,7 @@ public class Main {
         UsuarioAtual usuarioAtual = null;
 
         boolean logado = false;
+        String resposta;
         int resp = 0;
         do {
             System.out.println("---------- NATURA SPRING ----------");
@@ -78,61 +79,83 @@ public class Main {
 
                 // Fazer um post
                 case 3:
-                    if (usuarioAtual == null) {
-                        System.out.println("Você precisa estar logado para fazer um post.");
-                        break;
+                    if (verificaLogin(logado)) {
+                        System.out.println("Inserir o conteúdo do post");
+                        String conteudo = e.nextLine();
+                        Post post = new Post(conteudo, usuarioAtual);
+                        posts.add(post);
+                        System.out.println("Post criado com sucesso!");
                     }
-                    System.out.println("Inserir o conteúdo do post");
-                    String conteudo = e.nextLine();
-                    Post post = new Post(conteudo, usuarioAtual);
-                    posts.add(post);
-                    System.out.println("Post criado com sucesso!");
+
                     break;
 
                 case 4:
-                    System.out.println("---------- TIMELINE -------------");
-                    if (usuarioAtual == null) {
-                        System.out.println("Você precisa estar logado para visualizar a timeline.");
-                        break;
+                    if (verificaLogin(logado)) {
+                        System.out.println("---------- TIMELINE -------------");
+                        System.out.println("Você está logado como: " + usuarioAtual.getNomeUsuario());
+                        for (Post p : posts) {
+                            System.out.println("@" + p.getUsuario().getNomeUsuario());
+                            System.out.println(p.getConteudoPost());
+                            System.out.println("Curtidas: " + p.getQtdLike());
+
+                            System.out.println("Deseja curtir o post? s/n");
+                            char r = e.next().charAt(0);
+                            e.nextLine();
+
+                            if (r == 's') {
+                                p.setQtdLike(p.getQtdLike() + 1);
+                            }
+                            System.out.println("Curtidas: " + p.getQtdLike());
+
+                            System.out.println("Deseja comentar no post? s/n");
+                            r = e.next().charAt(0);
+                            e.nextLine();
+                            if (r == 's') {
+                                System.out.println("Inserir comentário:");
+                                String conteudoComentario = e.nextLine();
+                                Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p );
+                                comentarios.add(comentario);
+                                System.out.println("Comentário adicionado com sucesso!");
+
+                            }
+                            //printar os comentários
+                            for (Comentario c: comentarios) {
+                                System.out.println("------------- COMENTÁRIOS ----------------");
+                                System.out.println("@" + c.getUsuario().getNomeUsuario());
+                                System.out.println(c.getConteudoComentario());
+                            }
+                        }
                     }
-                    System.out.println("Você está logado como: " + usuarioAtual.getNomeUsuario());
-                    for (Post p : posts) {
-                        System.out.println("@" + p.getUsuario().getNomeUsuario());
-                        System.out.println(p.getConteudoPost());
-                        System.out.println("Curtidas: " + p.getQtdLike());
-
-                        System.out.println("Deseja curtir o post? s/n");
-                        char r = e.next().charAt(0);
+                    break;
+                case 5:
+                    if (verificaLogin(logado)){
+                        System.out.println("Insira o usuário que deseja seguir");
+                        resposta = e.next();
                         e.nextLine();
-
-                        if (r == 's') {
-                            p.setQtdLike(p.getQtdLike() + 1);
+                        for (Usuario u: usuarios ) {
+                            if(resposta.equals(u.getNomeUsuario())){
+                                u.setQdSeguidores(u.getQdSeguidores()+1);
+                            }
                         }
-                        System.out.println("Curtidas: " + p.getQtdLike());
+                    }
 
-                        System.out.println("Deseja comentar no post? s/n");
-                        r = e.next().charAt(0);
+                    break;
+                case 6:
+                    if (verificaLogin(logado)){
+                        System.out.println("Insira o usuário que deseja deixar de seguir");
+                        resposta = e.next();
                         e.nextLine();
-                        if (r == 's') {
-                            System.out.println("Inserir comentário:");
-                            String conteudoComentario = e.nextLine();
-                            Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p );
-                            comentarios.add(comentario);
-                            System.out.println("Comentário adicionado com sucesso!");
-
-                        }
-                        //printar os comentários
-                        System.out.println("------------- COMENTÁRIOS ----------------");
-                        for (Comentario c: comentarios) {
-                            System.out.println("@" + c.getUsuario().getNomeUsuario());
-                            System.out.println(c.getConteudoComentario());
+                        for (Usuario u: usuarios ) {
+                            if(resposta.equals(u.getNomeUsuario())){
+                                u.setQdSeguidores(u.getQdSeguidores()-1);
+                            }
                         }
                     }
                     break;
                 case 7:
                     logado = false;
                     usuarioAtual = null;
-                    System.out.println(" deslogado com sucesso");
+                    System.out.println("deslogado com sucesso");
                     break;
 
                 case 10:
@@ -142,26 +165,20 @@ public class Main {
                         System.out.println("Usuário atual: " + usuarioAtual.getNomeUsuario());
                     }
                     break;
-
-
-
                 default:
-                    System.out.println("Opção inválida.");
+                    if (resp!=0){
+                        System.out.println("Opção inválida.");
+                    }
                     break;
             }
         } while (resp != 0);
     }
-}
-
-
-// Curtida curtida = new Curtida();
-
-
-//for dev <3
-    /*public static void printarUsuarios(Usuario usuarios[]){
-        for (int i = 0; i < usuarios.length; i++) {
-            System.out.println("nome de usuario: " + usuarios[i].getNomeUsuario());
-            System.out.println("id do usuario: " + usuarios[i].getUsuarioId());
+    public static boolean verificaLogin(boolean logado){
+        if (!logado){
+            System.out.println("Você deve estar logado para realizar esta ação");
+            return false;
         }
-    }*/
+        return true;
+    }
+}
 
