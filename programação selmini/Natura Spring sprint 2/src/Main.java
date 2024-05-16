@@ -123,6 +123,7 @@ public class Main {
                                 System.out.println("------------- COMENTÁRIOS ----------------");
                                 System.out.println("@" + c.getUsuario().getNomeUsuario());
                                 System.out.println(c.getConteudoComentario());
+                                System.out.println("-----------------------------------------------");
                             }
                         }
                     }
