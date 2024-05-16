@@ -1,37 +1,38 @@
+import br.fiap.NaturaSpring.comentario.Comentario;
 import br.fiap.NaturaSpring.curtida.Curtida;
 import br.fiap.NaturaSpring.post.Post;
 import br.fiap.NaturaSpring.usuario.Usuario;
+import br.fiap.NaturaSpring.usuario.UsuarioAtual;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-//tem que fazer verificacoes pra ver se os dados de entrada sao validos!!!
-//perfumaria: colocar login e senha na hora de fazer post (só se der tempo)
 public class Main {
     public static void main(String[] args) {
         Scanner e = new Scanner(System.in);
         List<Usuario> usuarios = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
+        List<Comentario> comentarios = new ArrayList<>();
+        UsuarioAtual usuarioAtual = null;
 
-       /* Usuario usuarios[] = new Usuario[2]; //aqui tem que fazer um controle pra adicionar um novo usuário kkkk... (vetor dinãmico?)
-        Post posts[] = new Post[2];*/
-
+        boolean logado = false;
         int resp = 0;
         do {
             System.out.println("---------- NATURA SPRING ----------");
             System.out.println("O que deseja fazer?");
-            System.out.println("0 - Sair\n1 - Cadastrar usuário \n2 - Fazer post\n3 - Visualizar timeline");
+            System.out.println("0 - SAIR\n1 - Criar conta\n2 - Logar em uma conta\n3 - Fazer post\n4 - Visualizar timeline" +
+                    "\n5 - Seguir um usuário\n6 - Deixar de seguir algum usuário\n7 - DESLOGAR" +
+                    "\n10 - user atual");
             resp = e.nextInt();
+            e.nextLine();
 
             switch (resp) {
                 case 1:
                     System.out.println("Inserir nome de usuário");
-                    String nomeUsuario = e.next();
-                    e.nextLine();
+                    String nomeUsuario = e.nextLine();
                     System.out.println("Inserir data de nascimento");
-                    String dataNasc = e.next();
-                    e.nextLine();
+                    String dataNasc = e.nextLine();
                     System.out.println("Inserir nickname");
                     String nickname = e.nextLine();
                     System.out.println("Inserir biografia");
@@ -43,57 +44,115 @@ public class Main {
                     int cpf = e.nextInt();
                     e.nextLine();
                     System.out.println("Inserir e-mail");
-                    String email = e.next();
+                    String email = e.nextLine();
                     System.out.println("Inserir telefone");
-                    String telefone = e.next();
+                    String telefone = e.nextLine();
+                    System.out.println("Inserir senha");
+                    String senha = e.nextLine();
 
-                    //criar um novo usuário
-
-                    Usuario usuario = new Usuario(nomeUsuario, dataNasc, nickname, biografia, nivelNatura, cpf, email, telefone);
+                    // Criar um novo usuário
+                    Usuario usuario = new Usuario(nomeUsuario, dataNasc, nickname, biografia, nivelNatura, cpf, email, telefone, senha);
                     usuarios.add(usuario);
-
                     break;
+
+                // Logar em alguma conta
                 case 2:
-                    System.out.println("Inserir o nome de usuário em que o post vai ser feito");
-                    String pesquisa = e.next();
-                    e.nextLine();
+                    System.out.println("Nome de usuário: ");
+                    nomeUsuario = e.nextLine();
+                    System.out.println("Senha: ");
+                    senha = e.nextLine();
 
-                    //procurar usuario no array de usuarios
-                    Usuario usuarioEncontrado = null;
                     for (Usuario u : usuarios) {
-                        if (pesquisa.equals(u.getNomeUsuario())) {
-                            usuarioEncontrado = u;
-
-                            if (usuarioEncontrado != null) {
-                                System.out.println("Inserir conteúdo do post");
-                                String conteudo = e.nextLine();
-                                Post post = new Post(conteudo, usuarioEncontrado);
-                                posts.add(post);
-                            } else {
-                                System.out.println("Usuário não encontrado.");
-                            }
+                        if (nomeUsuario.equals(u.getNomeUsuario()) && senha.equals(u.getSenha())) {
+                            System.out.println("Logou!");
+                            logado = true;
+                            usuarioAtual = new UsuarioAtual(u.getNomeUsuario(), u.getDataNasc(), u.getNickname(), u.getBiografia(),
+                                    u.getNivelNatura(), u.getUsuarioId(), u.getEmail(), u.getTelefone(), u.getSenha());
+                            break;
                         }
                     }
-
+                    if (!logado) {
+                        System.out.println("Senha incorreta ou usuário inexistente!");
+                    }
                     break;
+
+                // Fazer um post
                 case 3:
+                    if (usuarioAtual == null) {
+                        System.out.println("Você precisa estar logado para fazer um post.");
+                        break;
+                    }
+                    System.out.println("Inserir o conteúdo do post");
+                    String conteudo = e.nextLine();
+                    Post post = new Post(conteudo, usuarioAtual);
+                    posts.add(post);
+                    System.out.println("Post criado com sucesso!");
+                    break;
+
+                case 4:
                     System.out.println("---------- TIMELINE -------------");
+                    if (usuarioAtual == null) {
+                        System.out.println("Você precisa estar logado para visualizar a timeline.");
+                        break;
+                    }
+                    System.out.println("Você está logado como: " + usuarioAtual.getNomeUsuario());
+                    for (Post p : posts) {
+                        System.out.println("@" + p.getUsuario().getNomeUsuario());
+                        System.out.println(p.getConteudoPost());
+                        System.out.println("Curtidas: " + p.getQtdLike());
+
+                        System.out.println("Deseja curtir o post? s/n");
+                        char r = e.next().charAt(0);
+                        e.nextLine();
+
+                        if (r == 's') {
+                            p.setQtdLike(p.getQtdLike() + 1);
+                        }
+                        System.out.println("Curtidas: " + p.getQtdLike());
+
+                        System.out.println("Deseja comentar no post? s/n");
+                        r = e.next().charAt(0);
+                        e.nextLine();
+                        if (r == 's') {
+                            System.out.println("Inserir comentário:");
+                            String conteudoComentario = e.nextLine();
+                            Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p );
+                            comentarios.add(comentario);
+                            System.out.println("Comentário adicionado com sucesso!");
+
+                        }
+                        //printar os comentários
+                        System.out.println("------------- COMENTÁRIOS ----------------");
+                        for (Comentario c: comentarios) {
+                            System.out.println("@" + c.getUsuario().getNomeUsuario());
+                            System.out.println(c.getConteudoComentario());
+                        }
+                    }
+                    break;
+                case 7:
+                    logado = false;
+                    usuarioAtual = null;
+                    System.out.println(" deslogado com sucesso");
+                    break;
+
+                case 10:
+                    if (usuarioAtual == null) {
+                        System.out.println("Nenhum usuário logado.");
+                    } else {
+                        System.out.println("Usuário atual: " + usuarioAtual.getNomeUsuario());
+                    }
+                    break;
+
+
+
+                default:
+                    System.out.println("Opção inválida.");
+                    break;
             }
         } while (resp != 0);
-
-                    /*for (int i = 0; i < usuarios.length; i++) {
-                        System.out.println("nome de usuario: " + usuarios[i].getNomeUsuario());
-                        System.out.println("id do usuario: " + usuarios[i].getUsuarioId());
-                    }*/
-        for (Post p : posts) {
-            System.out.println("conteúdo: " + p.getConteudoPost());
-            System.out.println("autor: " + p.getUsuario().getNomeUsuario());
-        }
-
     }
-
-
 }
+
 
 // Curtida curtida = new Curtida();
 

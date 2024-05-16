@@ -15,8 +15,9 @@ public class Usuario {
     private int cpf;
     private String email;
     private String telefone;
+    private String senha;
 
-    public Usuario(String nomeUsuario, String dataNasc, String nickname, String biografia, int nivelNatura, int cpf, String email, String telefone) {
+    public Usuario(String nomeUsuario, String dataNasc, String nickname, String biografia, int nivelNatura, int cpf, String email, String telefone, String senha) {
         this.usuarioId = geraId();
         this.nomeUsuario = nomeUsuario;
         this.dataNasc = dataNasc;
@@ -29,6 +30,7 @@ public class Usuario {
         this.cpf = cpf;
         this.email = email;
         this.telefone = telefone;
+        this.senha = senha;
     }
 
 //método para gerar o id do usuário
@@ -131,5 +133,13 @@ public class Usuario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
