@@ -1,5 +1,4 @@
 import br.fiap.NaturaSpring.comentario.Comentario;
-import br.fiap.NaturaSpring.curtida.Curtida;
 import br.fiap.NaturaSpring.post.Post;
 import br.fiap.NaturaSpring.usuario.Usuario;
 import br.fiap.NaturaSpring.usuario.UsuarioAtual;
@@ -89,47 +88,52 @@ public class Main {
 
                     break;
 
+                // Visualizar a timeline
                 case 4:
                     if (verificaLogin(logado)) {
                         System.out.println("---------- TIMELINE -------------");
                         System.out.println("Você está logado como: " + usuarioAtual.getNomeUsuario());
+
                         for (Post p : posts) {
+                            // Exibe o post
                             System.out.println("@" + p.getUsuario().getNomeUsuario());
                             System.out.println(p.getConteudoPost());
                             System.out.println("Curtidas: " + p.getQtdLike());
 
+                            // Verifica se deseja curtir o post
                             System.out.println("Deseja curtir o post? s/n");
                             char r = e.next().charAt(0);
                             e.nextLine();
-
                             if (r == 's') {
                                 p.setQtdLike(p.getQtdLike() + 1);
                             }
                             System.out.println("Curtidas: " + p.getQtdLike());
 
+                            // Verifica se deseja comentar no post
                             System.out.println("Deseja comentar no post? s/n");
                             r = e.next().charAt(0);
                             e.nextLine();
                             if (r == 's') {
                                 System.out.println("Inserir comentário:");
                                 String conteudoComentario = e.nextLine();
-                                Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p );
+                                Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p);
                                 comentarios.add(comentario);
                                 System.out.println("Comentário adicionado com sucesso!");
-
                             }
-                            //printar os comentários
+
+                            // Exibe os comentários do post atual
                             System.out.println("------------- COMENTÁRIOS ----------------");
-                            System.out.println(p.getConteudoPost());
-                            for (Comentario c: comentarios) {
-                                System.out.println("@" + c.getUsuario().getNomeUsuario());
-                                System.out.println(c.getConteudoComentario());
+                            for (Comentario c : comentarios) {
+                                if (c.getPost().equals(p)) {
+                                    System.out.println("@" + c.getUsuario().getNomeUsuario());
+                                    System.out.println(c.getConteudoComentario());
+                                }
                             }
                             System.out.println("-----------------------------------------------");
-
                         }
                     }
                     break;
+                // Seguir um usuário
                 case 5:
                     if (verificaLogin(logado)){
                         System.out.println("Insira o usuário que deseja seguir");
@@ -141,8 +145,8 @@ public class Main {
                             }
                         }
                     }
-
                     break;
+                // Deixar de seguir um usuário
                 case 6:
                     if (verificaLogin(logado)){
                         System.out.println("Insira o usuário que deseja deixar de seguir");
@@ -155,12 +159,13 @@ public class Main {
                         }
                     }
                     break;
+                // Deslogar
                 case 7:
                     logado = false;
                     usuarioAtual = null;
                     System.out.println("deslogado com sucesso");
                     break;
-
+                // Mostrar usuário atual
                 case 10:
                     if (usuarioAtual == null) {
                         System.out.println("Nenhum usuário logado.");
@@ -176,6 +181,8 @@ public class Main {
             }
         } while (resp != 0);
     }
+
+    // Método para verificar se o usuário está logado
     public static boolean verificaLogin(boolean logado){
         if (!logado){
             System.out.println("Você deve estar logado para realizar esta ação");
@@ -184,4 +191,3 @@ public class Main {
         return true;
     }
 }
-
