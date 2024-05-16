@@ -11,9 +11,10 @@ public class Post {
     private int qtdComentario;
     private Usuario usuario;
 
-    public Post(String conteudoPost) {
+    public Post(String conteudoPost,Usuario usuario) {
         this.idPost = geraId();
         this.conteudoPost = conteudoPost;
+        this.usuario = usuario;
     }
 
     //método para gerar o id do post
@@ -51,5 +52,13 @@ public class Post {
 
     public void setQtdComentario(int qtdComentario) {
         this.qtdComentario = qtdComentario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
