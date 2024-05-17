@@ -1,5 +1,6 @@
 package br.fiap.NaturaSpring.usuario;
 
+import java.util.List;
 import java.util.Random;
 
 public class Usuario {
@@ -38,6 +39,26 @@ public class Usuario {
         Random rd = new Random();
        return this.usuarioId = rd.nextInt(1000000);
     }
+
+    public void seguir(List<Usuario> usuarios, String resposta){
+        for (Usuario u: usuarios ) {
+            if(resposta.equals(u.getNomeUsuario())){
+                u.setQdSeguidores(u.getQdSeguidores()+1);
+                System.out.println("Seguiu com suceddo!");
+                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
+            }
+        }
+    }
+    public void deixaDeseguir(List<Usuario> usuarios, String resposta){
+        for (Usuario u: usuarios ) {
+            if(resposta.equals(u.getNomeUsuario())){
+                u.setQdSeguidores(u.getQdSeguidores()-1);
+                System.out.println("Deixou de seguir!");
+                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
+            }
+        }
+    }
+
 
     public int getUsuarioId() {
         return usuarioId;

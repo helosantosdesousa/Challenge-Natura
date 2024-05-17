@@ -139,11 +139,7 @@ public class Main {
                         System.out.println("Insira o usuário que deseja seguir");
                         resposta = e.next();
                         e.nextLine();
-                        for (Usuario u: usuarios ) {
-                            if(resposta.equals(u.getNomeUsuario())){
-                                u.setQdSeguidores(u.getQdSeguidores()+1);
-                            }
-                        }
+                        usuarioAtual.seguir(usuarios, resposta);
                     }
                     break;
                 // Deixar de seguir um usuário
@@ -152,11 +148,7 @@ public class Main {
                         System.out.println("Insira o usuário que deseja deixar de seguir");
                         resposta = e.next();
                         e.nextLine();
-                        for (Usuario u: usuarios ) {
-                            if(resposta.equals(u.getNomeUsuario())){
-                                u.setQdSeguidores(u.getQdSeguidores()-1);
-                            }
-                        }
+                        usuarioAtual.deixaDeseguir(usuarios,resposta);
                     }
                     break;
                 // Deslogar
