@@ -4,9 +4,9 @@ import br.fiap.NaturaSpring.post.Post;
 import br.fiap.NaturaSpring.usuario.Usuario;
 
 public class Comentario {
-    String conteudoComentario;
-    Usuario usuario;
-    Post post;
+    private String conteudoComentario;
+    private Usuario usuario;
+    private Post post;
 
     public Comentario(String conteudoComentario, Usuario usuario, Post post) {
         this.conteudoComentario = conteudoComentario;

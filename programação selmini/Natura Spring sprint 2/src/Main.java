@@ -1,5 +1,6 @@
 import br.fiap.NaturaSpring.comentario.Comentario;
 import br.fiap.NaturaSpring.post.Post;
+import br.fiap.NaturaSpring.timeline.Timeline;
 import br.fiap.NaturaSpring.usuario.Usuario;
 import br.fiap.NaturaSpring.usuario.UsuarioAtual;
 
@@ -12,7 +13,8 @@ public class Main {
         Scanner e = new Scanner(System.in);
         List<Usuario> usuarios = new ArrayList<>();
         List<Post> posts = new ArrayList<>();
-        List<Comentario> comentarios = new ArrayList<>();
+
+        Timeline timeline = new Timeline();
         UsuarioAtual usuarioAtual = null;
 
         boolean logado = false;
@@ -76,7 +78,6 @@ public class Main {
                     }
                     break;
 
-                // Fazer um post
                 case 3:
                     if (verificaLogin(logado)) {
                         System.out.println("Inserir o conteúdo do post");
@@ -85,51 +86,35 @@ public class Main {
                         posts.add(post);
                         System.out.println("Post criado com sucesso!");
                     }
-
                     break;
 
-                // Visualizar a timeline
                 case 4:
                     if (verificaLogin(logado)) {
                         System.out.println("---------- TIMELINE -------------");
                         System.out.println("Você está logado como: " + usuarioAtual.getNomeUsuario());
-
-                        for (Post p : posts) {
-                            // Exibe o post
-                            System.out.println("@" + p.getUsuario().getNomeUsuario());
-                            System.out.println(p.getConteudoPost());
-                            System.out.println("Curtidas: " + p.getQtdLike());
-
-                            // Verifica se deseja curtir o post
-                            System.out.println("Deseja curtir o post? s/n");
+                        for (Post post : posts) {
+                            System.out.println("@" + post.getUsuario().getNomeUsuario());
+                            System.out.println(post.getConteudoPost());
+                            timeline.exibeCurtidas(post);
+                            timeline.exibeComentarios(post);
+                            System.out.println("Deseja curtir o post?");
                             char r = e.next().charAt(0);
-                            e.nextLine();
                             if (r == 's') {
-                                p.setQtdLike(p.getQtdLike() + 1);
+                                post.setQtdLikes(post.getQtdLikes()+1);
                             }
-                            System.out.println("Curtidas: " + p.getQtdLike());
-
-                            // Verifica se deseja comentar no post
-                            System.out.println("Deseja comentar no post? s/n");
+                            System.out.println("Curtidas: " + post.getQtdLikes());
+                            System.out.println("Deseja comentar algo no post de @" + post.getUsuario().getNomeUsuario() + "? s/n");
                             r = e.next().charAt(0);
-                            e.nextLine();
+                            e.nextLine(); // Consumir a nova linha
+
                             if (r == 's') {
-                                System.out.println("Inserir comentário:");
+                                System.out.println("Inserir comentário");
                                 String conteudoComentario = e.nextLine();
-                                Comentario comentario = new Comentario(conteudoComentario, usuarioAtual, p);
-                                comentarios.add(comentario);
-                                System.out.println("Comentário adicionado com sucesso!");
+                                usuarioAtual.insereComentario(post, conteudoComentario);
                             }
 
-                            // Exibe os comentários do post atual
-                            System.out.println("------------- COMENTÁRIOS ----------------");
-                            for (Comentario c : comentarios) {
-                                if (c.getPost().equals(p)) {
-                                    System.out.println("@" + c.getUsuario().getNomeUsuario());
-                                    System.out.println(c.getConteudoComentario());
-                                }
-                            }
-                            System.out.println("-----------------------------------------------");
+                            // Exibir comentários atualizados do post específico
+                            timeline.exibeComentarios(post);
                         }
                     }
                     break;

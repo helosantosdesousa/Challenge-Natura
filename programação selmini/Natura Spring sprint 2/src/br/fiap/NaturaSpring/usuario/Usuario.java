@@ -1,5 +1,9 @@
 package br.fiap.NaturaSpring.usuario;
 
+import br.fiap.NaturaSpring.comentario.Comentario;
+import br.fiap.NaturaSpring.post.Post;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +22,7 @@ public class Usuario {
     private String telefone;
     private String senha;
 
+    List<Comentario> comentarios = new ArrayList<>();
     public Usuario(String nomeUsuario, String dataNasc, String nickname, String biografia, int nivelNatura, int cpf, String email, String telefone, String senha) {
         this.usuarioId = geraId();
         this.nomeUsuario = nomeUsuario;
@@ -34,29 +39,51 @@ public class Usuario {
         this.senha = senha;
     }
 
-//método para gerar o id do usuário
-    public int geraId(){
+    //método para gerar o id do usuário
+    public int geraId() {
         Random rd = new Random();
-       return this.usuarioId = rd.nextInt(1000000);
+        return this.usuarioId = rd.nextInt(1000000);
     }
 
-    public void seguir(List<Usuario> usuarios, String resposta){
-        for (Usuario u: usuarios ) {
-            if(resposta.equals(u.getNomeUsuario())){
-                u.setQdSeguidores(u.getQdSeguidores()+1);
+    public void seguir(List<Usuario> usuarios, String resposta) {
+        for (Usuario u : usuarios) {
+            if (resposta.equals(u.getNomeUsuario())) {
+                u.setQdSeguidores(u.getQdSeguidores() + 1);
                 System.out.println("Seguiu com suceddo!");
                 System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
             }
         }
     }
-    public void deixaDeseguir(List<Usuario> usuarios, String resposta){
-        for (Usuario u: usuarios ) {
-            if(resposta.equals(u.getNomeUsuario())){
-                u.setQdSeguidores(u.getQdSeguidores()-1);
+
+    public void deixaDeseguir(List<Usuario> usuarios, String resposta) {
+        for (Usuario u : usuarios) {
+            if (resposta.equals(u.getNomeUsuario())) {
+                u.setQdSeguidores(u.getQdSeguidores() - 1);
                 System.out.println("Deixou de seguir!");
                 System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
             }
         }
+    }
+
+    public void insereComentario(Post post, String conteudoComentario) {
+        Comentario comentario = new Comentario(conteudoComentario, this, post);
+        post.getComentarios().add(comentario);
+    }
+
+
+
+   /* public void insereComentario(Post post, List<Comentario> comentarios, String conteudoComentario) {
+        Comentario comentario = new Comentario(conteudoComentario, this, post);
+        comentarios.add(comentario);
+    }*/
+
+    public void curtePost(List<Post> posts) {
+
+        for (Post p : posts) {
+            p.setQtdLikes(p.getQtdLikes()+1);
+           // p.setQtdLike(p.getQtdLike() + 1);
+        }
+
     }
 
 
@@ -162,5 +189,13 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
     }
 }
