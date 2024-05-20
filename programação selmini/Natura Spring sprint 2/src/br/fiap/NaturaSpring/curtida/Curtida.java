@@ -1,23 +1,28 @@
 package br.fiap.NaturaSpring.curtida;
 
+import br.fiap.NaturaSpring.post.Post;
+import br.fiap.NaturaSpring.usuario.Usuario;
+import br.fiap.NaturaSpring.usuario.UsuarioAtual;
+
 public class Curtida {
-    private String nomeUsuario;
+    private Usuario usuario;
 
-    public Curtida(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public Curtida(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public void curtePost(){
-
+    public void curtePost(Post post){
+        post.setQtdLikes(post.getQtdLikes()+1);
     }
-    public void retiraCurtida(){
-
-    }
-    public String getNomeUsuario() {
-        return nomeUsuario;
+    public void retiraCurtida(Post post){
+        post.setQtdLikes(post.getQtdLikes()-1);
     }
 
-    public void setNomeUsuario(String nomeUsuario) {
-        this.nomeUsuario = nomeUsuario;
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

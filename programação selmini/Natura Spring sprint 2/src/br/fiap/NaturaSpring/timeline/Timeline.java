@@ -20,7 +20,9 @@ public class Timeline {
             exibeComentarios(p);
         }
     }
-
+    public int exibeCurtidas(Post post) {
+        return post.getQtdLikes();
+    }
 
     public void exibeComentarios(Post post) {
         System.out.println("------------- COMENTÁRIOS ----------------");
@@ -33,20 +35,6 @@ public class Timeline {
         }
         System.out.println("-----------------------------------------------");
     }
-
-
-
-
- /*   public void exibeComentarios(Post post) {
-        for (Comentario c : comentarios) {
-            System.out.println("------------- COMENTÁRIOS ----------------");
-            if (c.getPost().equals(post)) {
-                System.out.println("@" + c.getUsuario().getNomeUsuario() + ": " + c.getConteudoComentario());
-            }
-        }
-        System.out.println("-----------------------------------------------");
-    }*/
-
 
     public List<Usuario> getUsuarios() {
         return usuarios;
@@ -72,4 +60,6 @@ public class Timeline {
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
+
+
 }
