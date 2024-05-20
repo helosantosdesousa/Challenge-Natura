@@ -13,7 +13,7 @@ public class Usuario {
     private String dataNasc;
     private String nickname;
     private String biografia;
-    private int qdSeguidores;
+    private int qtdSeguidores;
     private int qtdSeguindo;
     private int qtdPost;
     private int nivelNatura;
@@ -29,7 +29,7 @@ public class Usuario {
         this.dataNasc = dataNasc;
         this.nickname = nickname;
         this.biografia = biografia;
-        this.qdSeguidores = 0;
+        this.qtdSeguidores = 0;
         this.qtdSeguindo = 0;
         this.qtdPost = 0;
         this.nivelNatura = nivelNatura;
@@ -48,9 +48,9 @@ public class Usuario {
     public void seguir(List<Usuario> usuarios, String resposta) {
         for (Usuario u : usuarios) {
             if (resposta.equals(u.getNomeUsuario())) {
-                u.setQdSeguidores(u.getQdSeguidores() + 1);
+                u.setQtdSeguidores(u.getQtdSeguidores() + 1);
                 System.out.println("Seguiu com suceddo!");
-                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
+                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQtdSeguidores());
             }
         }
     }
@@ -58,9 +58,9 @@ public class Usuario {
     public void deixaDeseguir(List<Usuario> usuarios, String resposta) {
         for (Usuario u : usuarios) {
             if (resposta.equals(u.getNomeUsuario())) {
-                u.setQdSeguidores(u.getQdSeguidores() - 1);
+                u.setQtdSeguidores(u.getQtdSeguidores() - 1);
                 System.out.println("Deixou de seguir!");
-                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQdSeguidores());
+                System.out.println("Usuário: " + resposta + " | qtd de seguidores: " + u.getQtdSeguidores());
             }
         }
     }
@@ -71,17 +71,10 @@ public class Usuario {
     }
 
 
-
-   /* public void insereComentario(Post post, List<Comentario> comentarios, String conteudoComentario) {
-        Comentario comentario = new Comentario(conteudoComentario, this, post);
-        comentarios.add(comentario);
-    }*/
-
     public void curtePost(List<Post> posts) {
 
         for (Post p : posts) {
             p.setQtdLikes(p.getQtdLikes()+1);
-           // p.setQtdLike(p.getQtdLike() + 1);
         }
 
     }
@@ -127,12 +120,12 @@ public class Usuario {
         this.biografia = biografia;
     }
 
-    public int getQdSeguidores() {
-        return qdSeguidores;
+    public int getQtdSeguidores() {
+        return qtdSeguidores;
     }
 
-    public void setQdSeguidores(int qdSeguidores) {
-        this.qdSeguidores = qdSeguidores;
+    public void setQtdSeguidores(int qtdSeguidores) {
+        this.qtdSeguidores = qtdSeguidores;
     }
 
     public int getQtdSeguindo() {

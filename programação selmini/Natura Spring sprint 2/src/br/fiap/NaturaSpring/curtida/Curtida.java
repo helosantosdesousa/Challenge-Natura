@@ -14,9 +14,6 @@ public class Curtida {
     public void curtePost(Post post){
         post.setQtdLikes(post.getQtdLikes()+1);
     }
-    public void retiraCurtida(Post post){
-        post.setQtdLikes(post.getQtdLikes()-1);
-    }
 
     public Usuario getUsuario() {
         return usuario;

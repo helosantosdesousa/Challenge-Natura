@@ -109,7 +109,6 @@ public class Main {
                             System.out.println("Deseja comentar algo no post de @" + post.getUsuario().getNomeUsuario() + "? s/n");
                             r = e.next().charAt(0);
                             e.nextLine();
-
                             if (r == 's') {
                                 System.out.println("Inserir comentário");
                                 String conteudoComentario = e.nextLine();

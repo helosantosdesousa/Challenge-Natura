@@ -5,6 +5,5 @@ public class UsuarioAtual extends Usuario {
         super(nomeUsuario, dataNasc, nickname, biografia, nivelNatura, cpf, email, telefone, senha);
     }
 
-    // Se houver métodos ou propriedades adicionais para UsuarioAtual, adicione-os aqui
 }
 

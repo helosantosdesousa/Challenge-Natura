@@ -2,6 +2,7 @@ package br.fiap.NaturaSpring.comentario;
 
 import br.fiap.NaturaSpring.post.Post;
 import br.fiap.NaturaSpring.usuario.Usuario;
+import br.fiap.NaturaSpring.usuario.UsuarioAtual;
 
 public class Comentario {
     private String conteudoComentario;
